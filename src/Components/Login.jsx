@@ -41,6 +41,17 @@ export default class Login extends React.Component {
                             text-align="right"
                         />
                     </div>
+                    <div className="textField2">
+                        <TextField
+                            name="password"
+                            label="Password"
+                            id="outlined-size-small"
+                            variant="outlined"
+                            size="small"
+                            helperText="Use 8 or more characters with a mix of letters, numbers & symbols"
+                            required
+                        />
+                    </div>
                     <div className="buttonContainer">
                         <Link to="/">
                             <Button variant="link"> Create account </Button>
