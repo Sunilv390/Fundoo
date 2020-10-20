@@ -4,6 +4,7 @@ import logo from '../Assets/logo.svg'
 import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 export default class Registration extends React.Component{
     constructor(props){
@@ -92,8 +93,9 @@ export default class Registration extends React.Component{
                                         <p className="passwordHint">Use 8 or more characters with a mix of letters, numbers & symbols</p>
                                             <div className="button">
                                                 <div className="button1">
+                                                    <Link to="/login">
                                                     <Button variant="link">Sign in instead</Button>
-
+                                                    </Link>
                                                 </div>
 
                                                 <div className="button2">

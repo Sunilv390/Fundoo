@@ -1,15 +1,19 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router , Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Registration from './Components/Registration';
+import Login from './Components/Login';
 
 function App() {
   return (
+    <BrowserRouter>
     <div>
-      <Router>
+      <Switch>
         <Route exact path="/" component={Registration}/>
-      </Router>
+        <Route path="/login" component={Login}/>
+      </Switch>
     </div>
+    </BrowserRouter>
   );
 }
 

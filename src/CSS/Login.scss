@@ -1,0 +1,59 @@
+.loginMainContainer {
+    display: flex;
+    justify-content: center;
+	background-color: #fff;
+	border : 1px solid #dadce0;
+	margin : 50px auto;
+	align-items: center;
+	height : 500px;
+	max-width : 450px;
+	border-radius: 8px;	
+}
+
+.loginContainer {
+
+	padding: 20px 30px 30px;
+	display : flex;
+	flex-grow: 1;
+	box-sizing: border-box;
+	flex-direction: column;
+	justify-content: center;
+}
+.buttonContainer {
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+	padding-top: 30px;
+}
+
+.textField {
+	padding-top: 20px;
+}
+
+.loginfundoofont{
+
+	align-items: center;
+	font-size: 30px; 
+	font-weight : 500;
+}
+
+.loginFont{
+    font-size: 2rem
+}
+
+.logintitle {
+    padding-top: 5px;
+    font-size: 22px;
+	font-weight: 400;
+}
+.loginSubTitle {
+	padding-top: 0px;
+	font-size: 18px;
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.CreateAccount {
+	font-size: 15px;
+	font-weight: 600;
+} 
