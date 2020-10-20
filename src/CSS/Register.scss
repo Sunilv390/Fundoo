@@ -1,0 +1,113 @@
+.mainContainer{
+	display: flex;
+	justify-content: center;
+	background-color: #fff;
+	border : 1px solid #c3c4c7;
+	margin : 200px auto;
+	// align-items: center;
+	height : 500px;
+	max-width : 750px;
+	border-radius: 8px;	
+}
+
+.bodyContainer{
+	padding: 48px 40px;
+	display : flex;
+/*	flex-grow: 1;*/
+/*	box-sizing: border-box;*/
+	/*overflow: hidden;*/
+}
+
+.registrationContainer{
+	flex-basis: 450px;
+	/*margin: 0 -48px;*/
+	padding: 0 48px;
+}
+
+.fundoofont{
+	display: flex;
+	font-size: 25px; 
+	font-weight : 500;
+	/*justify-content: flex-start;*/
+}
+
+.f {
+	color: #4285F4;
+}
+
+.u{
+	color: #DB4437;
+}
+
+.n{
+	color: #F4B400;
+}
+
+.d{
+	color: #4285F4;
+}
+
+.o{
+	color: #0F9D58;
+}
+
+.o1{
+	color: #DB4437;
+}
+
+.p1{
+	margin: 15px 0 15px 0;
+	display : flex;
+	font-size: 20px;
+	font-weight: 500;
+	justify-content: flex-start;
+	line-height: 80%;
+}
+
+.text1{
+	display: flex;
+	flex-direction: row;
+	width: 120%;
+}
+
+.textRow2{
+	margin-left: 25px;
+}
+
+.text{
+	display: flex;
+	flex-direction: column;
+}
+
+.textColumn2{
+	padding-top: 20px;
+
+}
+
+.image{
+	width: 100%;
+	height: auto;
+}
+
+.text3{
+	display: flex;
+	flex-direction: row;
+	width: 105%;
+	padding-top: 20px
+}
+
+.button{
+	display: flex;
+	flex-direction: row;
+	padding-top: 20px;
+	justify-content: space-between;
+}
+
+.textColumn2{
+	width: 120%;}
+
+.passwordHint{
+	font-size: 14px;
+	padding-left: 10px;
+	opacity: 0.8;
+} 
