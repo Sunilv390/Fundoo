@@ -2,6 +2,7 @@ import React from 'react'
 import '../CSS/Login.scss'
 import { Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
+import userService from '../Services/userServices';
 import Button from 'react-bootstrap/Button';
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -31,7 +32,24 @@ export default class Login extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         if (validateForm(this.state.errors)) {
+            if (this.state.email === null || this.state.password === null) {
+                console.error("invalid Form");
+            } else {
+                const data = {
+                    email: this.state.email,
+                    password: this.state.password,
+                };
 
+                console.log("Calling Api");
+                userService.login(data)
+                    .then(data => {
+                        console.log(data.data.id);
+                        localStorage.setItem("token", data.data.id)
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            }
         }
     }
 
@@ -98,6 +116,8 @@ export default class Login extends React.Component {
                             label="Password"
                             id="outlined-size-small"
                             variant="outlined"
+                            ref="password"
+                            type="password"
                             size="small"
                             helperText="Use 8 or more characters with a mix of letters, numbers & symbols"
                             required
@@ -108,11 +128,16 @@ export default class Login extends React.Component {
                             {errors.password.length > 0 && (<span className="errorMessage">{errors.password}</span>)}
                         </div>
                     </div>
+                    <div>
+                        <div className="Lbutton3">
+                            <Button variant="link" href="/forgetPassword"><span class="Forgetpassword">Forget password?</span></Button>
+                        </div>
+                    </div>
                     <div className="buttonContainer">
                         <Link to="/">
                             <Button variant="link"> Create account </Button>
                         </Link>
-                        <Button variant="primary"> Sign in </Button>
+                        <Button variant="primary" onClick={this.handleSubmit}> Sign in </Button>
                     </div>
                 </div>
             </div>

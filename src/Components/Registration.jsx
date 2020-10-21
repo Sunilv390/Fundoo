@@ -4,6 +4,7 @@ import logo from '../Assets/logo.svg'
 import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import userService from '../Services/userServices'
 import { Link } from 'react-router-dom';
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -39,6 +40,31 @@ export default class Registration extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(this.state.errors)) {
+            if(this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password === null || this.state.confirmPassword === null) {
+                console.log("Invalid form");
+            }
+            else
+            {
+                const user = {
+                    firstName : this.state.firstName,
+                    lastName :this.state.lastName,
+                    email : this.state.email,
+                    password : this.state.password,
+                    /*confirmPassword : this.state.confirmPassword,*/
+                    service : "advance",
+                };
+
+                if (this.state.password === this.state.confirmPassword) {
+                    console.log("Calling Api");
+                    userService.register(user)
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }
+            }
         }
     }
 
@@ -185,7 +211,8 @@ export default class Registration extends React.Component {
                                         </div>
 
                                         <div className="button2">
-                                            <Button variant="primary">Register</Button>{' '}
+                                            <Link to="/login">
+                                            <Button variant="primary" onClick={this.handleSubmit}>Register</Button></Link>{' '}
 
                                         </div>
                                     </div>

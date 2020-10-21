@@ -2,6 +2,7 @@ import React from 'react';
 import "../CSS/ForgetPassword.scss";
 import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
+import userService from '../Services/userServices';
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
@@ -29,11 +30,26 @@ export default class ForgetPassword extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         if (validateForm(this.state.errors)) {
+            if (this.state.email == null) {
+                console.error("Invalid Form");
+            }else {
+                const data = {
+                    email : this.state.email,
+                }
 
+                console.log("Calling Api");
+                userService.forgotPass(data)
+                .then(data => {
+                    console.log("Reset password link has been sent to the email",data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         }
     }
 
-    handleChange = event => {
+    handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
         let errors = this.state.errors;
@@ -87,9 +103,11 @@ export default class ForgetPassword extends React.Component {
                     </div>
 
                     <div className="buttonContainer">
-
+                        {/* <div className="Lbutton3">
+                            <Button color="primary" href="/login"><span class="Forgetpassword">Forget password?</span></Button>
+                        </div> */}
                         <div className="Lbutton2">
-                            <Button variant="primary">Next</Button>
+                            <Button variant="primary" onClick={this.handleSubmit} type="submit">Next</Button>
                         </div>
                     </div>
                 </div>

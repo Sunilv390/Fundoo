@@ -2,6 +2,8 @@ import React from 'react';
 import "../CSS/ResetPassword.scss";
 import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
+import userService from '../Services/userServices';
+
 
 const validateForm = errors => {
     let valid = true;
@@ -29,8 +31,30 @@ export default class ResetPassword extends React.Component {
     
     handleSubmit = event => {
         event.preventDefault();
-        if (validateForm(this.state.errors)) {
+        let errors=this.state.errors;
+        if (this.state.password == null) {
+            errors.password = "Password required";
+        }
+        if (this.state.passwordConfirm == null) {
+            errors.passwordConfirm = "Confirm Password required";
+        }
+        let token = this.props.match.params.token;
+        localStorage.setItem('token', token);
 
+        const user = {
+            newPassword : this.state.password
+        }
+
+        console.log("Calling Api");
+        userService.resetPass(user)
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        if (validateForm(this.state.errors)) {
         }
     }
 
@@ -111,7 +135,7 @@ export default class ResetPassword extends React.Component {
 
                     	<div className="Lbutton2">
                     		<Button
-                                variant="primary">
+                                variant="primary" onClick={this.handleSubmit}>
                                 Reset
                             </Button>
                     	</div>
