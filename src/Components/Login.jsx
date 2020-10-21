@@ -4,12 +4,58 @@ import { Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import Button from 'react-bootstrap/Button';
 
+const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+
+const validateForm = errors => {
+    let valid = true;
+    Object.values(errors).forEach(val => { val.length > 0 && (valid = false); });
+    return valid;
+};
+
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+
+            email: null,
+            password: null,
+
+            errors: {
+                email: "",
+                password: "",
+            }
+        }
+    }
+
+    handleSubmit = event => {
+        event.preventDefault();
+        if (validateForm(this.state.errors)) {
+
+        }
+    }
+
+    handleChange = event => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = this.state.errors;
+
+        switch (name) {
+            case "email":
+                errors.email = validEmailRegex.test(value) ? "" : "Email Id not valid";
+                break;
+            case "password":
+                errors.password = value.length < 8 ? "Password Not valid" : "";
+                break;
+            default:
+                break;
+        }
+
+        this.setState({ errors, [name]: value }, () => console.log(this.state));
     }
 
     render() {
+        const { errors } = this.state;
         return (
             <div className="loginMainContainer">
                 <div className="loginContainer">
@@ -31,15 +77,20 @@ export default class Login extends React.Component {
                         <TextField
                             fullWidth
                             type="email"
-                            name="Username"
+                            name="email"
                             label="Username"
                             id="outlined-size-small"
                             variant="outlined"
                             size="small"
                             helperText="Use EmailID or Mobile Number"
                             required
+                            value={this.state.email}
+                            onChange={this.handleChange}
                             text-align="right"
                         />
+                        <div className="error">
+                            {errors.email.length > 0 && (<span className="errorMessage">{errors.email}</span>)}
+                        </div>
                     </div>
                     <div className="textField2">
                         <TextField
@@ -50,7 +101,12 @@ export default class Login extends React.Component {
                             size="small"
                             helperText="Use 8 or more characters with a mix of letters, numbers & symbols"
                             required
+                            value={this.state.password}
+                            onChange={this.handleChange}
                         />
+                        <div className="error">
+                            {errors.password.length > 0 && (<span className="errorMessage">{errors.password}</span>)}
+                        </div>
                     </div>
                     <div className="buttonContainer">
                         <Link to="/">
