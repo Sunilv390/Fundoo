@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import userService from '../Services/userServices'
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import { Link } from 'react-router-dom';
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -14,6 +16,7 @@ const validateForm = errors => {
     Object.values(errors).forEach(val => { val.length > 0 && (valid = false); });
     return valid;
 };
+
 
 export default class Registration extends React.Component {
     constructor(props) {
@@ -32,6 +35,14 @@ export default class Registration extends React.Component {
                 email: "",
                 password: "",
                 confirmPassword: "",
+            },
+            flags : {
+                status : "",
+            },
+
+            Responses : {
+              Success : "",
+              Message : "",  
             }
 
         }
@@ -39,8 +50,28 @@ export default class Registration extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        let flags = this.state.flags;
+        let errors = this.state.errors;
+        if (this.state.firstName == null) {
+            errors.firstName = "First Name Required";
+        }
+        if (this.state.lastName == null) {
+            errors.lastName = "Last Name Required";
+        }
+        if (this.state.email == null) {
+            errors.email = "Email Id Required";
+        }
+        if (this.state.password == null) {
+            errors.password = "Password Required";
+        }
+        if (this.state.confirmPassword == null) {
+            errors.confirmPassword = "Confirm Password Required";
+        }
         if (validateForm(this.state.errors)) {
+            flags.status = "Success";
+            console.info('Valid Form')
             if(this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password === null || this.state.confirmPassword === null) {
+                flags.status = "Failed";
                 console.log("Invalid form");
             }
             else
@@ -50,7 +81,6 @@ export default class Registration extends React.Component {
                     lastName :this.state.lastName,
                     email : this.state.email,
                     password : this.state.password,
-                    /*confirmPassword : this.state.confirmPassword,*/
                     service : "advance",
                 };
 
@@ -59,6 +89,13 @@ export default class Registration extends React.Component {
                     userService.register(user)
                     .then(data => {
                         console.log(data);
+                        const object = data.data;
+                        console.log(object.success);
+                        console.log(object.message);
+                        if (data.status === 200) {
+                            console.log(data.data);
+                            this.props.history.push('/login');
+                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -66,6 +103,14 @@ export default class Registration extends React.Component {
                 }
             }
         }
+        else
+        {
+            
+            flags.status = "Failed";
+            console.error('Invalid Form')
+        }
+
+        this.setState( { flags }, ()=> console.log(this.state));
     }
 
     handleChange = event => {
@@ -100,6 +145,8 @@ export default class Registration extends React.Component {
 
     render() {
         const { errors } = this.state;
+        const { flags } = this.state;
+        const { Responses } = this.state;
         return (
             <div className="mainContainer">
                 <div className="bodyContainer">
@@ -231,7 +278,27 @@ export default class Registration extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="AlertMessage">
+                        <div className="successAlert">
+                                { flags.status === "Success" && (
+                                    <Alert severity="success">
+                                    <AlertTitle>{Responses.Success}</AlertTitle>
+                                        <strong></strong>
+                                    </Alert>
+                                    )}
+                        </div>
+                        <div className="failedAlert">
+                                { flags.status === "Failed" && (
+                                    <Alert severity="error">
+                                    <AlertTitle>Error</AlertTitle>
+                                        <strong></strong>
+                                    </Alert>
+
+                                    )}
+                        </div>
+                        </div>
             </div>
+            
         );
     }
 }

@@ -122,10 +122,12 @@
     width:5%;
     height:89.2%;
     transition: 0.2s;
+    background-color: white;
+  z-index: 3;
   }
 
   .drawar-width-open-relative{
-    width:15%;
+    width:20%;
     height:100.2%;
     transition: 0.2s;
     box-shadow: 5px 5px 5px 0px #E4E0E0;
@@ -136,6 +138,7 @@
   .drawar-container{
     display:flex;
     height:89.2%;
+    // width: 100%;
   }
 
 

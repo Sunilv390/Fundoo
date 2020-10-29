@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../CSS/Login.scss'
 import { Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import userService from '../Services/userServices';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from 'react-bootstrap/Button';
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -12,7 +14,6 @@ const validateForm = errors => {
     Object.values(errors).forEach(val => { val.length > 0 && (valid = false); });
     return valid;
 };
-
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -25,14 +26,32 @@ export default class Login extends React.Component {
             errors: {
                 email: "",
                 password: "",
+            },
+            flags: {
+                success: "",
+                failed: "",
             }
         }
     }
 
     handleSubmit = event => {
         event.preventDefault();
+        let flags = this.state.flags;
+        let errors = this.state.errors;
+        if (this.state.email === null) {
+            errors.email = "Email Id Required";
+        }
+
+        if (this.state.password === null) {
+            errors.password = "Password Required";
+        }
         if (validateForm(this.state.errors)) {
+            flags.failed = "";
+            flags.success = "Success";
+            console.info('Valid Form')
             if (this.state.email === null || this.state.password === null) {
+                flags.success = "";
+                flags.failed = "Failed";
                 console.error("invalid Form");
             } else {
                 const data = {
@@ -43,14 +62,26 @@ export default class Login extends React.Component {
                 console.log("Calling Api");
                 userService.login(data)
                     .then(data => {
-                        console.log(data.data.id);
-                        localStorage.setItem("token", data.data.id)
+                        localStorage.setItem("Token", data.data.id)
+                        if (data.status === 200) {
+                            console.log(data.data.id);
+                            this.props.history.push('/dashboard');
+                        }
                     })
                     .catch((error) => {
+                        flags.success = "";
+                        flags.failed = "Failed";
                         console.log(error);
+
                     })
             }
         }
+        else {
+            flags.success = "";
+            flags.failed = "Failed";
+            console.error('Invalid Form')
+        }
+        this.setState({ flags }, () => console.log(this.state));
     }
 
     handleChange = event => {
@@ -74,6 +105,7 @@ export default class Login extends React.Component {
 
     render() {
         const { errors } = this.state;
+        const { flags } = this.state;
         return (
             <div className="loginMainContainer">
                 <div className="loginContainer">
@@ -140,6 +172,25 @@ export default class Login extends React.Component {
                         <Button variant="primary" onClick={this.handleSubmit}> Sign in </Button>
                     </div>
                 </div>
+                <div className="AlertMessage">
+                    <div className="successAlert">
+                        {flags.success.length > 0 && flags.failed == null && (
+                            <Alert severity="success">
+                                <AlertTitle>Success</AlertTitle>
+                                <strong>Congratulation, Login SuccessFull!</strong>
+                            </Alert>
+                        )}
+                    </div>
+                    <div className="failedAlert">
+                        {flags.failed.length > 0 && (
+                            <Alert severity="error">
+                                <AlertTitle><strong>Enter Detail</strong></AlertTitle>
+
+                            </Alert>
+                        )}
+                    </div>
+                </div>
+
             </div>
         );
     }
