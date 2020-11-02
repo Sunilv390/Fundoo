@@ -259,7 +259,7 @@ export default class Registration extends React.Component {
 
                                         <div className="button2">
                                             <Link to="/login">
-                                            <Button variant="primary" onClick={this.handleSubmit}>Register</Button></Link>{' '}
+                                            <Button variant="primary" onClick={this.handleSubmit}>Register</Button></Link>
 
                                         </div>
                                     </div>

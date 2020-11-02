@@ -53,5 +53,32 @@ class noteServices {
 			}
 		});
 	}
+
+	restoreNote(data){
+		let url=configUrl+'notes/trashNotes';
+		return axiosService.post(url,data,true,{
+			headers:{
+				Authorization:localStorage.getItem("Token")
+			}
+		});
+	}
+
+	DeleteForever(data){
+		let url=configUrl+'notes/deleteForeverNotes';
+		return axiosService.post(url,data,true,{
+			headers:{
+				Authorization:localStorage.getItem("Token")
+			}
+		});
+	}
+
+	Archive(data){
+		let url=configUrl+'notes/archiveNotes';
+		return axiosService.post(url,data,true,{
+			headers:{
+				Authorization:localStorage.getItem("Token")
+			}
+		});
+	}
 }
 export default new noteServices();

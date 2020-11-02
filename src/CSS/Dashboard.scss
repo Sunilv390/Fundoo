@@ -78,9 +78,7 @@
 
 .drawar{
     display: flex;
-    justify-content: flex-start;   
     flex-direction: column;
-    align-items: center;
     height: 50%;
   }
 
@@ -106,7 +104,13 @@
     align-items: center;
     justify-content: flex-start;
     height: 100%;
+    padding-left:20px;
     width: 100%;
+    border-radius: 50px;
+  }
+
+  .active.drawar-icon-contener-open{
+    background-color:#feefc3; 
   }
   
   .icon{
@@ -116,6 +120,12 @@
   .icon-lable{
     margin-left: 12%;
     color: #5f6368;
+  }
+
+  .icon-lable-hide{
+    margin-left: 12%;
+    color: #5f6368;
+    display: none;
   }
   
   .drawar-width{
@@ -130,7 +140,7 @@
     width:20%;
     height:100.2%;
     transition: 0.2s;
-    box-shadow: 5px 5px 5px 0px #E4E0E0;
+    // box-shadow: 5px 5px 5px 0px #E4E0E0;
     background-color: white;
     z-index: 3;
   }
@@ -146,14 +156,14 @@
     width:15%;
     height:89.2%;
     transition: 0.2s;
-    box-shadow: 5px 5px 5px 0px #E4E0E0;
+    // box-shadow: 5px 5px 5px 0px #E4E0E0;
     background-color: white;
     z-index: 3;
   }
   
   .drawar-icon-open{
     fill: #5f6368;
-    margin-left: 10%;
+    // margin-left: 10%;
   }
 
 .Account{

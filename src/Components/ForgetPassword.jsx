@@ -4,114 +4,93 @@ import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
 import userService from '../Services/userServices';
 
-const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-
-const validateForm = errors => {
-    let valid = true;
-    Object.values(errors).forEach(val => { val.length > 0 && (valid = false); });
-    return valid;
-};
+const emailValidation = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export default class ForgetPassword extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
-            email: null,
-
-            errors: {
-
-                email: "",
-            }
-        }
-    }
-
-    handleSubmit = event => {
+          email: null,
+    
+          formErrors: {
+            errorEmail: "",
+          },
+        };
+      }
+    
+      onValueChange = (e) => {
+        
+    
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+        
+    
+        let inputs = this.state.formErrors;
+        inputs.errorEmail =
+          emailValidation.test(e.target.value) === true ? "" : "Enter valid email";
+      };
+    
+      onSubmit = (event) => {
         event.preventDefault();
-        if (validateForm(this.state.errors)) {
-            if (this.state.email == null) {
-                console.error("Invalid Form");
-            }else {
-                const data = {
-                    email : this.state.email,
-                }
-
-                console.log("Calling Api");
-                userService.forgotPass(data)
-                .then(data => {
-                    console.log("Reset password link has been sent to the email",data);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            }
-        }
-    }
-
-    handleChange = (event) => {
-        event.preventDefault();
-        const { name, value } = event.target;
-        let errors = this.state.errors;
-
-        if (validEmailRegex.test(value)) {
-            errors.email = "";
+        let userData = {
+          email: this.state.email,
+        };
+        if (
+          this.state.formErrors.errorEmail !== "" 
+        ) {
+          console.log("Input Fields are not properly filled");
         } else {
-            errors.email = "Email Id not valid";
+          userService.forgotPass(userData).then((data) => {
+            console.log("Reset password link sent to the registered Email address",data);
+          }).catch((error) => {
+            console.log("Invalid Entry",error);
+          });
         }
-
-        this.setState({ errors, [name]: value }, () => console.log(this.state));
-    }
-
-
-    render() {
-        const { errors } = this.state;
+      };
+    
+      render() {
         return (
-            <div className="forgetMainContainer" >
-                <div className="forgetContainer" >
-                    <div className="forgetfundoofont" align="center">
-                        <span style={{ color: "#4885ed" }}>F</span>
-                        <span style={{ color: "#db3236" }}>u</span>
-                        <span style={{ color: "#f4c20d" }}>n</span>
-                        <span style={{ color: "#4885ed" }}>d</span>
-                        <span style={{ color: "#3cba54" }}>o</span>
-                        <span style={{ color: "#db3236" }}>o</span>
-                    </div>
-                    <p className="forgettitle" align="center">
-                        Find your Email
-					</p>
-                    <p className="forgetSubTitle" align="center">
-                        Enter your phone number or recovery email
-					</p>
-                    <div className="textField1">
-                        <TextField
-                            fullWidth
-                            type="email"
-                            name="Username"
-                            label="Phone number or email"
-                            id="outlined-size-small"
-                            variant="outlined"
-                            helperText="Use Email or Phone"
-                            size="medium"
-                            required
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            text-align="right" />
-                        <div className="error">
-                            {errors.email.length > 0 && (<span className="errorMessage">{errors.email}</span>)}
-                        </div>
-                    </div>
-
-                    <div className="buttonContainer">
-                        {/* <div className="Lbutton3">
-                            <Button color="primary" href="/login"><span class="Forgetpassword">Forget password?</span></Button>
-                        </div> */}
-                        <div className="Lbutton2">
-                            <Button variant="primary" onClick={this.handleSubmit} type="submit">Next</Button>
-                        </div>
-                    </div>
+          <div className="fpOuterdiv">
+            <div className="fpInnerdiv">
+              <div className="fpFundooAlign">
+              <span style={{ color: "#4885ed" }}>F</span>
+                    <span style={{ color: "#db3236" }}>u</span>
+                    <span style={{ color: "#f4c20d" }}>n</span>
+                    <span style={{ color: "#4885ed" }}>d</span>
+                    <span style={{ color: "#3cba54" }}>o</span>
+                    <span style={{ color: "#db3236" }}>o</span>
+              </div>
+              <div className="font1" style={{display:"flex",justifyContent:"center"}}>
+                <h5>Find your Email</h5>
+              </div>
+              <div className="fptextmargin">
+                <h6>Enter your phone number or recovery email</h6>
+              </div>
+              <div className="fpinput">
+                <div className="fpEmail">
+                  <TextField
+                    id="outlined-basic"
+                    label="Email"
+                    name="email"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    onChange={this.onValueChange}
+                  />
+                  <span className="errorMessage">
+                    {this.state.formErrors.errorEmail}
+                  </span>
                 </div>
+              </div>
+              <div className="fpbutton">
+                <Button type="submit" onClick={this.onSubmit} variant="primary">
+                  Next
+                </Button>
+              </div>
             </div>
+          </div>
         );
+      }
     }
-} 

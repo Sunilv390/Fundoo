@@ -8,11 +8,6 @@ function App() {
   return (
     <Provider store={store}>
     <div style={{height:"100%"}}>
-        {/* <Route exact path="/" component={Registration}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/forgetpassword" component={ForgetPassword}/>
-        <Route path="/resetpassword/:token" component={ResetPassword}/>
-        <Route path="/dashboard" component={Dashboard}/> */}
         <DefaultRoute/>
     </div>
     </Provider>

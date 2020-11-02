@@ -2,6 +2,7 @@ import React from 'react';
 import AddAlertIcon from '@material-ui/icons/AddAlert';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import '../CSS/CreateNote.scss';
 import noteServices from '../Services/noteServices'
 import {Dropdown} from 'react-bootstrap';
@@ -24,6 +25,31 @@ export default function Menubar(props){
             console.log(error);
         });
 
+    }
+
+    const archive=(flag)=>{
+        console.log(props.notes);
+        const Data={
+            isArchived:flag,
+            noteIdList:[props.notesId]
+        }
+        noteServices.Archive(Data)
+            .then(res=>{
+                console.log(res)
+                props.GetNotes();
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+    }
+    const archiveIcon=()=>{
+        if(props.parent.includes("archive")){
+            return(<ArchiveIcon style={{fill:"#5f6368"}}className="icon-design" onClick={()=>{archive(true)}} />)
+        }
+        else
+        {
+            return(<UnarchiveIcon style={{fill:"#5f6368"}}className="icon-design" onClick={()=>{archive(false)}} />)
+        }
     }
 
     return(
@@ -51,7 +77,7 @@ export default function Menubar(props){
             </Dropdown.Menu>
             </Dropdown>
            <CropOriginalIcon className="icon-design"/>
-            <ArchiveIcon style={{fill:"#5f6368"}}className="icon-design" />
+            {archiveIcon()}
             <DropDown GetNotes={props.GetNotes} notesId={props.notesId}/>
         </div>
     )
